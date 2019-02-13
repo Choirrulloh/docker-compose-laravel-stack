@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+    php:
+        build:
+            context: ./docker
+            dockerfile: php.Dockerfile
+        container_name: avansTuinDeEs-php
+        volumes:
+            - './app:/var/www/html'
+        environment:
+            PHP_EXTENSION_DEBUG: 1
+            PHP_INI_XDEBUG__REMOTE_PORT: 9001
+            PHP_IDE_CONFIG: "serverName=avansTuinDeEs"
+            XDEBUG_CONFIG: "remote_port=9001 remote_autostart=1 remote_host=192.168.141.129"
+
+    nginx:
+        image: 'nginx:1.13.6'
+        container_name: avansTuinDeEs-nginx
+        ports:
+            - '80:80'
+            - '443:443'
+        links:
+            - 'php'
+        volumes:
+            - './app:/var/www/html'
+            - './config/nginx:/etc/nginx/conf.d'
+
+    db:
+        image: mysql:5.7
+        container_name: avansTuinDeEs-db
+        restart: 'on-failure'
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: avansTuinDeEs
+            MYSQL_USER: avansTuinDeEs
+            MYSQL_PASSWORD: avansTuinDeEs
+            MYSQL_DATABASE: avansTuinDeEs
