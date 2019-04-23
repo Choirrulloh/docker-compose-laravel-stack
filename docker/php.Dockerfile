@@ -6,6 +6,7 @@ RUN apt-get update && \
     docker-php-ext-install zip && \
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-install mysqli && \
+    docker-php-ext-install bcmath && \
     curl -sL https://deb.nodesource.com/setup_8.x | bash && \
     apt-get install nodejs -yq && \
     pecl install xdebug && \
